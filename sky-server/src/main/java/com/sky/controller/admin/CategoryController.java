@@ -87,7 +87,7 @@ public class CategoryController {
     public Result<String> startOrStop(@PathVariable("status") Integer status, Long id){
         categoryService.startOrStop(status,id);
         return Result.success();
-    }
+    } 
 
     /**
      * 根据类型查询分类
