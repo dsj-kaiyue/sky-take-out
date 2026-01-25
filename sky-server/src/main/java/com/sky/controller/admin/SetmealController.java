@@ -5,11 +5,15 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
+import com.sky.vo.SetmealVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/setmeal")
@@ -45,6 +49,53 @@ public class SetmealController {
         return Result.success(pageResult);
     }
 
+    /**
+     * 根据id查询套餐信息
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询套餐信息")
+    public Result getById(@PathVariable Long id){
+        log.info("根据id查询套餐信息:{}",id);
+        SetmealVO setmealVO=setmealService.getByIdWithDish(id);
+        return Result.success(setmealVO);
+    }
 
+    /**
+     * 修改套餐信息
+     * @param setmealDTO
+     * @return
+     */
+    @PutMapping()
+    @ApiOperation("修改套餐信息")
+    public Result update(@RequestBody SetmealDTO setmealDTO){
+        log.info("修改套餐信息:{}",setmealDTO);
+        setmealService.updateWithDish(setmealDTO);
+        return Result.success();
+    }
 
+    /**
+     * 套餐启用或禁用
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("套餐启用或禁用接口")
+    public Result startOrStop(@PathVariable Integer status, Long id){
+        log.info("套餐启用或禁用：{},{}", status,id);
+        setmealService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    /**
+     * 根据ids批量删除套餐
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("删除套餐接口")
+    public Result deleteByIds(@RequestParam List<Long> ids){
+        log.info("删除套餐：{}", ids);
+        setmealService.deleteByIds(ids);
+        return Result.success();
+    }
 }

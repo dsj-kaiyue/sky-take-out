@@ -8,6 +8,8 @@ import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface SetmealMapper {
 
@@ -32,4 +34,33 @@ public interface SetmealMapper {
      * @return
      */
     Page<Setmeal> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 根据id查询套餐
+     * @param id
+     * @return
+     */
+    @Select("select * from setmeal where id = #{id}")
+    Setmeal getById(Long id);
+
+    /**
+     * 根据分类id获取分类名称
+     * @param categoryId
+     * @return
+     */
+    @Select("select name from category where id = #{categoryId}")
+    String getCategoryNameById(Long categoryId);
+
+    /**
+     * 更新套餐信息
+     * @param setmeal
+     */
+    @AutoFill(value = OperationType.UPDATE)
+    void updateById(Setmeal setmeal);
+
+    /**
+     * 根据ids批量删除套餐
+     * @param ids
+     */
+    void deleteByIds(List<Long> ids);
 }
