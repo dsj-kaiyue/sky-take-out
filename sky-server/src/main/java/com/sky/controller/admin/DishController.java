@@ -27,7 +27,11 @@ public class DishController {
     private DishService dishService;
 
 
-
+    /**
+     * 新增菜品接口
+     * @param dishDTO
+     * @return
+     */
     @PostMapping
     @ApiOperation("新增菜品接口")
     public Result save(@RequestBody DishDTO dishDTO){
@@ -35,6 +39,7 @@ public class DishController {
         dishService.saveWithFlavor(dishDTO);
         return Result.success();
     }
+
     /**
      * 菜品分页查询
      * @param dishPageQueryDTO
@@ -93,12 +98,19 @@ public class DishController {
      * @return
      */
     @GetMapping("/list")
-    public Result<List<Dish>> getByCategoryId(Long categoryId){
+    @ApiOperation("根据分类id查询菜品")
+    public Result<List<Dish>> list(Long categoryId){
         log.info("根据分类id查询菜品:{}",categoryId);
-        List<Dish> dishList=dishService.getByCategoryId(categoryId);
-        return Result.success(dishList);
+        List<Dish> list = dishService.list(categoryId);
+        return Result.success(list);
     }
 
+    /**
+     * 起售或停售菜品
+     * @param status
+     * @param id
+     * @return
+     */
     @PostMapping("/status/{status}")
     @ApiOperation("起售或停售菜品")
     public Result startOrStop(@PathVariable Integer status,Long id){
