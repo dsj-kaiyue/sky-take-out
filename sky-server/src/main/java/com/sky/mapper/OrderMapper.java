@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -73,11 +74,18 @@ public interface OrderMapper {
     List<Orders> getByStatusAndOrderTime(Integer status, LocalDateTime orderTime);
 
     /**
-     *
+     * 根据订单号和用户id查询订单
      * @param orderNumber
      * @param userId
      * @return
      */
     @Select("select  * from orders where number=#{orderNumber} and user_id=#{userId}")
     Orders getByNumberAndUserId(String orderNumber, Long userId);
+
+    /**
+     * 根据条件统计营业额
+     * @param map
+     * @return
+     */
+    Double sumByMap(Map map);
 }
